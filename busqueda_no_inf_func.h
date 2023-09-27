@@ -15,11 +15,11 @@ void ImprimirCamino(Vertice& vertice_inicial, Vertice& vertice_final, std::vecto
       std::cout << camino[i].GetId() << "-";
     }
   }
-  std::cout << "  " << "Vertices visitados: " << vertices_visitados[0].GetId();
+  std::cout << std::endl << "Vertices visitados: " << vertices_visitados[0].GetId();
   for (unsigned i = 1; i < vertices_visitados.size(); ++i) {
     std::cout << ", " << vertices_visitados[i].GetId();
   }
-  std::cout << "  " << "Vertices generados: " << vertices_generados[0].GetId();
+  std::cout << std::endl << "Vertices generados: " << vertices_generados[0].GetId();
   for (unsigned i = 1; i < vertices_generados.size(); ++i) {
     std::cout << ", " << vertices_generados[i].GetId();
   }
