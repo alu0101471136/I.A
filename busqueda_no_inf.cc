@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Vertice.h"
 #include "ArbolBusqueda.h"
+#include "busqueda_no_inf_func.h"
 
 int main(int argc, char* argv[]) {
   std::string informacion_fichero{argv[1]};
@@ -27,26 +28,10 @@ int main(int argc, char* argv[]) {
   float distacia_camino{0};
   if (opcion == 1) {
     arbol.BusquedaAmplitud(vertice_inicial, vertice_final, camino, vertices_visitados, vertices_generados, distacia_camino);
-    std::cout << "v0: " << vertice_inicial.GetId() << " | vd: " << vertice_final.GetId() << std::endl;
-    std::cout << "Camino: ";
-    for (int i = camino.size() - 1; i >= 0; --i) {
-      if (i == 0) {
-        std::cout << camino[i].GetId();
-      } else {
-        std::cout << camino[i].GetId() << "-";
-      }
-    }
-    std::cout << "  " << "Vertices visitados: " << vertices_visitados[0].GetId();
-    for (unsigned i = 1; i < vertices_visitados.size(); ++i) {
-      std::cout << ", " << vertices_visitados[i].GetId();
-    }
-    std::cout << "  " << "Vertices generados: " << vertices_generados[0].GetId();
-    for (unsigned i = 1; i < vertices_generados.size(); ++i) {
-      std::cout << ", " << vertices_generados[i].GetId();
-    }
-    std::cout << "  " << std::endl << "Coste del camino: " << distacia_camino << std::endl;
+    ImprimirCamino(vertice_inicial, vertice_final, camino, vertices_visitados, vertices_generados, distacia_camino);
   } else if (opcion == 2) {
-    std::cout << "Busqueda en profundidad" << std::endl;
+    arbol.BusquedaProfundidad(vertice_inicial, vertice_final, camino, vertices_visitados, vertices_generados, distacia_camino);
+    ImprimirCamino(vertice_inicial, vertice_final, camino, vertices_visitados, vertices_generados, distacia_camino);
   } else {
     std::cout << "Opción no válida" << std::endl;
   }

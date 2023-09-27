@@ -4,8 +4,14 @@
 #include "Vertice.h"
 #include "ArbolBusqueda.h"
 #include <algorithm>
+#include <stack>
 #include <queue>
-
+/**
+ * @name ArbolBusqueda
+ * @brief constructor de la clase ArbolBusqueda
+ * 
+ * @param informacion_fichero fichero que contiene la informacion del grafo
+*/
 ArbolBusqueda::ArbolBusqueda(std::string informacion_fichero) {
   std::ifstream fichero;
   fichero.open(informacion_fichero);
@@ -74,4 +80,48 @@ void ArbolBusqueda::BusquedaAmplitud(Vertice& vertice_inicial, Vertice& vertice_
     }
   }
   std::cout << "Camino no encontrado" << std::endl;
+}
+/**
+ * @name BusquedaProfundidad
+ * @brief funcion que realiza una busqueda en profundidad y genera un arbol de busqueda
+ * 
+ * @param vertice_inicial vertice inicial de la busqueda
+ * @param vertice_final vertice final de la busqueda
+ * @param camino vector que almacena el camino encontrado
+ * @param vertices_visitados vector que almacena los vertices visitados
+ * @param vertices_generados vector que almacena los vertices generados
+ * @param distancia_camino coste del camino encontrado
+*/
+void ArbolBusqueda::BusquedaProfundidad(Vertice& vertice_inicial, Vertice& vertice_final, std::vector<Vertice>& camino, 
+                        std::vector<Vertice>& vertices_visitados, std::vector<Vertice>& vertices_generados, float& distancia_camino) {
+  std::stack<Nodo*> pila;
+  Nodo* nodo_inicial = new Nodo(vertice_inicial);
+  vertices_generados.push_back(vertice_inicial);
+  pila.push(nodo_inicial);
+  while (!pila.empty()) {
+    Nodo* nodo_actual = pila.top();
+    pila.pop();
+    if (nodo_actual->GetVertice() == vertice_final) {
+      std::cout << "Camino encontrado" << std::endl;
+      while (nodo_actual->GetPadre() != nullptr) {
+        camino.push_back(nodo_actual->GetVertice());
+        distancia_camino += nodo_actual->GetCostePadre();
+        nodo_actual = nodo_actual->GetPadre();
+      }
+      camino.push_back(nodo_actual->GetVertice());
+      return;
+    } else {
+      vertices_visitados.push_back(nodo_actual->GetVertice());
+      for (int i = 0; i < numero_vertices_; ++i) {
+        if (matriz_costes_[nodo_actual->GetVertice().GetId()][i].second != -1) {
+          Vertice vertice_generado{matriz_costes_[nodo_actual->GetVertice().GetId()][i].first};
+          if (nodo_actual->BuscarRama(vertice_generado) == false) {
+            Nodo* nodo_generado = new Nodo(vertice_generado, nodo_actual, matriz_costes_[nodo_actual->GetVertice().GetId()][i].second);
+            pila.push(nodo_generado);
+            vertices_generados.push_back(vertice_generado);
+          }
+        }
+      }
+    }
+  }
 }

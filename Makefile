@@ -15,7 +15,7 @@ LDFLAGS = # Linker options (if any)
 # The all target builds all of the programs handled by the makefile.
 all: Arboles
 
-Arboles: busqueda_no_inf.o ArbolBusqueda.o Nodo.o
+Arboles: busqueda_no_inf.o ArbolBusqueda.o Nodo.o 
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Indicate that the all and clean targets do not
