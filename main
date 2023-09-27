@@ -1,0 +1,4 @@
+Fichero, primero numero de vertices, siguiente los costes en orden.
+cantidad de lineas = n * (n - 1) / 2
+n nodos m aristas v0 nodo inicial vd nodo final 
+fichero 2 mal
