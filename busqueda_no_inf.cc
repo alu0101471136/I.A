@@ -1,3 +1,15 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Inteligencia Artificial 2023-2024
+  *
+  * @file busqueda_no_inf.cc
+  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
+  * @date Sep 27 2023
+  * @brief Este es el programa principal de la busqueda no informada
+  * @bug No existen fallos conocidos
+  */
 #include <iostream>
 #include "Vertice.h"
 #include "ArbolBusqueda.h"

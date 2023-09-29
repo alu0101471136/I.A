@@ -1,3 +1,15 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Inteligencia Artificial 2023-2024
+  *
+  * @file ArbolBusqueda.h
+  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
+  * @date Sep 27 2023
+  * @brief Este es la cabecera de la clase vertice
+  * @bug No existen fallos conocidos
+  */
 #ifndef ARBOLBUSQUEDA_H
 #define ARBOLBUSQUEDA_H
 

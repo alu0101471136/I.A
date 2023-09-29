@@ -1,3 +1,15 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Inteligencia Artificial 2023-2024
+  *
+  * @file ArbolBusqueda.cc
+  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
+  * @date Sep 27 2023
+  * @brief Este es el programa que implementa los métodos de la clase ArbolBusqueda
+  * @bug No existen fallos conocidos
+  */
 #include <fstream>
 #include <iostream>
 #include "Nodo.h"

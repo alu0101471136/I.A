@@ -1,5 +1,18 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Inteligencia Artificial 2023-2024
+  *
+  * @file busqueda_no_inf_func.h
+  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
+  * @date Sep 27 2023
+  * @brief Este es una cabecera que contiene la funcion para imprimir el camino encontrado
+  * @bug No existen fallos conocidos
+  */
 #ifndef BUSQUEDA_NO_INF_FUNC_H
 #define BUSQUEDA_NO_INF_FUNC_H
+
 #include <iostream>
 #include "Vertice.h"
 #include "ArbolBusqueda.h"
