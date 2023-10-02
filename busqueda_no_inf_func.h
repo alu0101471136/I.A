@@ -18,6 +18,15 @@
 #include "Vertice.h"
 #include "ArbolBusqueda.h"
 
+bool Usage(int argc, char* argv[]) {
+  if (argc == 1) {
+    std::cout << "Modo de uso: ./Arboles <opción> <fichero_entrada>" << std::endl;
+    std::cout << "Programa Finalizado" << std::endl;
+    return false;
+  }
+  return true;
+}
+
 void ImprimirCamino(Vertice& vertice_inicial, Vertice& vertice_final, std::vector<Vertice>& camino, 
                     std::vector<Vertice>& vertices_visitados, std::vector<Vertice>& vertices_generados, float& distacia_camino) {
   std::fstream fichero_salida;
