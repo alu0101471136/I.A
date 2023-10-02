@@ -20,15 +20,21 @@ int main(int argc, char* argv[]) {
   ArbolBusqueda arbol(informacion_fichero);
   int opcion{0};
   std::cout << "¿Qué desea hacer?" << std::endl;
-  std::cout << "1. Busqueda en anchura" << std::endl;
+  std::cout << "1. Busqueda en amplitud" << std::endl;
   std::cout << "2. Busqueda en profundidad" << std::endl;
   std::cin >> opcion;
   std::cout << "¿Cuál es el vertice inicial?" << std::endl;
   int vertice_aux{0};
   std::cin >> vertice_aux;
+  vertice_aux--;
+  if (vertice_aux < 0 || vertice_aux >= arbol.GetNumeroVertices()) {
+    std::cout << "Vertice no válido" << std::endl;
+    return 0;
+  }
   Vertice vertice_inicial(vertice_aux);
   std::cout << "¿Cuál es el vertice final?" << std::endl;
   std::cin >> vertice_aux;
+  vertice_aux--;
   if (vertice_aux < 0 || vertice_aux >= arbol.GetNumeroVertices()) {
     std::cout << "Vertice no válido" << std::endl;
     return 0;
