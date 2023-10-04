@@ -58,7 +58,13 @@ ArbolBusqueda::ArbolBusqueda(std::string informacion_fichero) {
     std::cout << "Error al abrir el fichero" << std::endl;
   }
 }
-
+/**
+ * @name GenerarNumeroAleatorio
+ * @brief funcion que genera un numero aleatorio entre un rango
+ * 
+ * @param max valor maximo del rango
+ * @param min valor minimo del rango
+*/
 int GenerarNumeroAleatorio(int max, int min = 0) {
   return rand() % (max - min + 1) + min;
 }
