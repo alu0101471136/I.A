@@ -32,6 +32,7 @@ class ArbolBusqueda {
  private:
   int numero_vertices_;
   std::vector<std::vector<std::pair<Vertice,float>>> matriz_costes_;
+  std::vector<int> numero_hijos_;
 };
 
 #endif

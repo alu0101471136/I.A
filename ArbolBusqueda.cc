@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <stack>
 #include <queue>
+#include <cstdlib>
 /**
  * @name ArbolBusqueda
  * @brief constructor de la clase ArbolBusqueda
@@ -43,10 +44,23 @@ ArbolBusqueda::ArbolBusqueda(std::string informacion_fichero) {
         matriz_costes_[j][i] = std::make_pair(Vertice(i), coste);
       }
     }
+    for (int i = 0; i < numero_vertices_; i++) {
+      int numero_hijos{0};
+      for (int j = 0; j < numero_vertices_; j++) {
+        if (matriz_costes_[i][j].second != -1) {
+          numero_hijos++;
+        }
+      }
+      numero_hijos_.push_back(numero_hijos);
+    }
     fichero.close();
   } else {
     std::cout << "Error al abrir el fichero" << std::endl;
   }
+}
+
+int GenerarNumeroAleatorio(int max, int min = 0) {
+  return rand() % (max - min + 1) + min;
 }
 /**
  * @name BusquedaAmplitud
@@ -70,6 +84,7 @@ void ArbolBusqueda::BusquedaAmplitud(Vertice& vertice_inicial, Vertice& vertice_
     cola.pop();
     if (nodo_actual->GetVertice() == vertice_final) {
       std::cout << "Camino encontrado" << std::endl;
+      vertices_visitados.push_back(nodo_actual->GetVertice());
       while (nodo_actual->GetPadre() != nullptr) {
         camino.push_back(nodo_actual->GetVertice());
         distancia_camino += nodo_actual->GetCostePadre();
@@ -83,6 +98,7 @@ void ArbolBusqueda::BusquedaAmplitud(Vertice& vertice_inicial, Vertice& vertice_
         if (matriz_costes_[nodo_actual->GetVertice().GetId()][i].second != -1) {
           Vertice vertice_generado{matriz_costes_[nodo_actual->GetVertice().GetId()][i].first};
           if (nodo_actual->BuscarRama(vertice_generado) == false) {
+            // std::cout << "Aleatorio " << GenerarNumeroAleatorio(numero_hijos_[nodo_actual->GetVertice().GetId()]) + 1 << std::endl;
             Nodo* nodo_generado = new Nodo(vertice_generado, nodo_actual, matriz_costes_[nodo_actual->GetVertice().GetId()][i].second);
             cola.push(nodo_generado);
             vertices_generados.push_back(vertice_generado);
@@ -115,6 +131,7 @@ void ArbolBusqueda::BusquedaProfundidad(Vertice& vertice_inicial, Vertice& verti
     pila.pop();
     if (nodo_actual->GetVertice() == vertice_final) {
       std::cout << "Camino encontrado" << std::endl;
+      vertices_visitados.push_back(nodo_actual->GetVertice());
       while (nodo_actual->GetPadre() != nullptr) {
         camino.push_back(nodo_actual->GetVertice());
         distancia_camino += nodo_actual->GetCostePadre();
