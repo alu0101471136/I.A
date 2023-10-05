@@ -38,7 +38,7 @@ ArbolBusqueda::ArbolBusqueda(std::string informacion_fichero) {
       matriz_costes_[i][i] = std::make_pair(Vertice(i), -1);
       for (int j = i + 1; j < numero_vertices_; j++) {
         fichero >> coste;
-        // std::cout << i << ", " << j << " Coste: " << coste << std::endl;
+        std::cout << i << ", " << j << " Coste: " << coste << std::endl;
         matriz_costes_[i][j] = std::make_pair(Vertice(j), coste);
         matriz_costes_[j][i] = std::make_pair(Vertice(i), coste);
       }
@@ -69,6 +69,7 @@ void ArbolBusqueda::BusquedaAmplitud(Vertice& vertice_inicial, Vertice& vertice_
     Nodo* nodo_actual = cola.front();
     cola.pop();
     if (nodo_actual->GetVertice() == vertice_final) {
+      vertices_visitados.push_back(nodo_actual->GetVertice());
       std::cout << "Camino encontrado" << std::endl;
       while (nodo_actual->GetPadre() != nullptr) {
         camino.push_back(nodo_actual->GetVertice());
@@ -114,6 +115,7 @@ void ArbolBusqueda::BusquedaProfundidad(Vertice& vertice_inicial, Vertice& verti
     Nodo* nodo_actual = pila.top();
     pila.pop();
     if (nodo_actual->GetVertice() == vertice_final) {
+      vertices_visitados.push_back(nodo_actual->GetVertice());
       std::cout << "Camino encontrado" << std::endl;
       while (nodo_actual->GetPadre() != nullptr) {
         camino.push_back(nodo_actual->GetVertice());
@@ -124,7 +126,7 @@ void ArbolBusqueda::BusquedaProfundidad(Vertice& vertice_inicial, Vertice& verti
       return;
     } else {
       vertices_visitados.push_back(nodo_actual->GetVertice());
-      for (int i = 0; i < numero_vertices_; ++i) {
+      for (int i = numero_vertices_; i >= 0; --i) {
         if (matriz_costes_[nodo_actual->GetVertice().GetId()][i].second != -1) {
           Vertice vertice_generado{matriz_costes_[nodo_actual->GetVertice().GetId()][i].first};
           if (nodo_actual->BuscarRama(vertice_generado) == false) {
