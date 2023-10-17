@@ -1,36 +1,18 @@
-/**
-  * Universidad de La Laguna
-  * Escuela Superior de Ingeniería y Tecnología
-  * Grado en Ingeniería Informática
-  * Inteligencia Artificial 2023-2024
-  *
-  * @file Nodo.h
-  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
-  * @date Sep 27 2023
-  * @brief Este es la cabecera de la clase Nodo
-  * @bug No existen fallos conocidos
-  */
-#include "Vertice.h"
-/** 
- * @name Nodo
- * @brief clase que representa un nodo del arbol de busqueda
- * 
-*/
+#ifndef NODO_H
+#define NODO_H
+#include <iostream>
+
 class Nodo {
  public:
-  Nodo() : vertice_{Vertice()}, padre_{nullptr}, coste_padre_{0} {};
-  Nodo(Vertice vertice, Nodo* padre = nullptr, float coste_padre = 0) : 
-       vertice_{vertice}, padre_{padre}, coste_padre_{coste_padre} {};
-  Vertice GetVertice() const { return vertice_; }
-  Nodo* GetPadre() const { return padre_; }
-  float GetCostePadre() const { return coste_padre_; }
-  void SetPadre(Nodo* padre) { padre_ = padre; }
-  void SetCostePadre(float coste_padre) { coste_padre_ = coste_padre; }
-  bool BuscarRama(Vertice& vertice) const;
-  bool operator==(const Nodo& nodo) const { return this->vertice_ == nodo.vertice_; }
-  bool operator!=(const Nodo& nodo) const { return vertice_ != nodo.vertice_; }
+  Nodo();
+  Nodo(int identificador, int coste_total, int coste_acumulado, int coste_estimado) : identificador_(identificador), 
+       coste_total_(coste_total), coste_acumulado_(coste_acumulado), coste_estimado_(coste_estimado) {};
  private:
-  Vertice vertice_;
-  Nodo* padre_;
-  float coste_padre_;
+  Nodo* padre_; 
+  int identificador_;
+  int coste_total_;     /// F(n)
+  int coste_acumulado_; /// G(n)
+  int coste_estimado_;  /// H(n)
 };
+
+#endif

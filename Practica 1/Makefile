@@ -13,9 +13,9 @@ CXXFLAGS = -std=c++17 -g -Wall # C++ compiler options
 LDFLAGS = # Linker options (if any)
 
 # The all target builds all of the programs handled by the makefile.
-all: Pr02_Laberinto
+all: Arboles
 
-Pr02_Laberinto: Laberinto_main.o Laberinto.o 
+Arboles: busqueda_no_inf.o ArbolBusqueda.o Nodo.o 
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Indicate that the all and clean targets do not
