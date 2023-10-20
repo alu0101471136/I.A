@@ -18,5 +18,9 @@ int main(int argc, char* argv[]) {
   std::string fichero{argv[1]};
   Laberinto laberinto(fichero);
   laberinto.MostrarLaberinto();
+  std::vector<Nodo*> camino;
+  std::vector<Nodo*> nodos_abiertos;
+  std::vector<Nodo*> nodos_cerrados;
+  laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados);
   return 0;
 }
