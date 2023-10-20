@@ -8,7 +8,7 @@
             "name": "g++ - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Pr02_Laberinto",
+            "program": "${workspaceFolder}/Laberinto_main",
             "args": [ "maze" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/",
