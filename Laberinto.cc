@@ -102,14 +102,17 @@ void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>
   nodo_inicial->FuncionHeuristicaManhattan(posicion_final_);
   nodos_abiertos.push_back(nodo_inicial);
   while (!nodos_abiertos.empty()) {
-    for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
-      if (nodos_abiertos[i]->GetCosteTotal() < nodos_abiertos[0]->GetCosteTotal()) {
-        std::swap(nodos_abiertos[i], nodos_abiertos[0]);
+    if (nodos_abiertos.size() > 1) {
+      for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
+        if (nodos_abiertos[i]->GetCosteTotal() < nodos_abiertos[0]->GetCosteTotal()) {
+          std::swap(nodos_abiertos[i], nodos_abiertos[0]);
+        }
       }
     }
     Nodo* nodo_actual = nodos_abiertos[0];
     nodos_abiertos.erase(nodos_abiertos.begin());
     nodos_cerrados.push_back(nodo_actual);
+    std::cout << "Elegi a este" << std::endl;
     if (nodo_actual->GetCoordenadas() == posicion_final_) {
       std::cout << "Camino encontrado" << std::endl;
       while (nodo_actual->GetCoordenadas() != posicion_inicial_) {

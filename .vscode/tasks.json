@@ -6,7 +6,8 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-g",
-                "${file}",
+                "${fileDirname}/Laberinto_main.cc",
+                "${fileDirname}/Laberinto.cc",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-std=c++2a"
