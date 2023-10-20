@@ -45,9 +45,10 @@ bool Laberinto::MovimientoValido(std::pair<int,int> coordenadas) {
   return true;
 }
 
-bool Laberinto::NodoAbierto(std::pair<int,int> coordenadas, std::vector<Nodo*>& nodos_abiertos) {
+bool Laberinto::NodoAbierto(std::pair<int,int> coordenadas, std::vector<Nodo*>& nodos_abiertos, int& iterador) {
   for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
     if (nodos_abiertos[i]->GetCoordenadas() == coordenadas) {
+      iterador = i;
       return true;
     }
   }
@@ -69,21 +70,22 @@ void Laberinto::GetPosiblesVecinos(std::vector<Nodo*>& nodos_abiertos, std::vect
   const int dy[8] = {-1, 1, 0, 0, -1, 1, -1, 1};
   for (int i = 0; i < 8; i++) {
     std::pair<int,int> coordenadas_vecino = std::make_pair(coordenadas.first + dx[i], coordenadas.second + dy[i]);
-    if (MovimientoValido(coordenadas_vecino) && NodoAbierto(coordenadas_vecino, nodos_abiertos) && !NodoCerrado(coordenadas_vecino, nodos_cerrados)) {
+    int iterador;
+    if (MovimientoValido(coordenadas_vecino) && NodoAbierto(coordenadas_vecino, nodos_abiertos, iterador) && !NodoCerrado(coordenadas_vecino, nodos_cerrados)) {
       if (i >= 4) {
-        if (nodo_actual->GetCosteAcumulado() + 7 < nodos_abiertos[i]->GetCosteAcumulado()) {
-          nodos_abiertos[i]->SetCosteAcumulado(nodo_actual->GetCosteAcumulado() + 7);
-          nodos_abiertos[i]->FuncionHeuristicaManhattan(posicion_final_);
-          nodos_abiertos[i]->SetPadre(nodo_actual);
+        if (nodo_actual->GetCosteAcumulado() + 7 < nodos_abiertos[iterador]->GetCosteAcumulado()) {
+          nodos_abiertos[iterador]->SetCosteAcumulado(nodo_actual->GetCosteAcumulado() + 7);
+          nodos_abiertos[iterador]->FuncionHeuristicaManhattan(posicion_final_);
+          nodos_abiertos[iterador]->SetPadre(nodo_actual);
         }
       } else {
-        if (nodo_actual->GetCosteAcumulado() + 5 < nodos_abiertos[i]->GetCosteAcumulado()) {
-          nodos_abiertos[i]->SetCosteAcumulado(nodo_actual->GetCosteAcumulado() + 5);
-          nodos_abiertos[i]->FuncionHeuristicaManhattan(posicion_final_);
-          nodos_abiertos[i]->SetPadre(nodo_actual);
+        if (nodo_actual->GetCosteAcumulado() + 5 < nodos_abiertos[iterador]->GetCosteAcumulado()) {
+          nodos_abiertos[iterador]->SetCosteAcumulado(nodo_actual->GetCosteAcumulado() + 5);
+          nodos_abiertos[iterador]->FuncionHeuristicaManhattan(posicion_final_);
+          nodos_abiertos[iterador]->SetPadre(nodo_actual);
         }
       }
-    } else if (MovimientoValido(coordenadas_vecino) && !NodoAbierto(coordenadas_vecino, nodos_abiertos) && !NodoCerrado(coordenadas_vecino, nodos_cerrados)) {
+    } else if (MovimientoValido(coordenadas_vecino) && !NodoAbierto(coordenadas_vecino, nodos_abiertos, iterador) && !NodoCerrado(coordenadas_vecino, nodos_cerrados)) {
       if (i >= 4) {
         Nodo* nodo_vecino = new Nodo(coordenadas_vecino, nodo_actual->GetCosteAcumulado() + 7, nodo_actual->GetCosteEstimado(), nodo_actual);
         nodo_vecino->FuncionHeuristicaManhattan(posicion_final_);
@@ -112,7 +114,6 @@ void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>
     Nodo* nodo_actual = nodos_abiertos[0];
     nodos_abiertos.erase(nodos_abiertos.begin());
     nodos_cerrados.push_back(nodo_actual);
-    std::cout << "Elegi a este" << std::endl;
     if (nodo_actual->GetCoordenadas() == posicion_final_) {
       std::cout << "Camino encontrado" << std::endl;
       while (nodo_actual->GetCoordenadas() != posicion_inicial_) {

@@ -18,6 +18,22 @@ int main(int argc, char* argv[]) {
   std::string fichero{argv[1]};
   Laberinto laberinto(fichero);
   laberinto.MostrarLaberinto();
+  std::cout << "¿Desea cambiar las casillas de incio y final?" << std::endl;
+  std::cout << "1. Sí   2. No" << std::endl;
+  int opcion;
+  std::cin >> opcion;
+  if (opcion == 1) {
+    std::cout << "Introduzca las coordenadas de la casilla de inicio: " << std::endl;
+    int fila, columna;
+    std::cin >> fila >> columna;
+    laberinto.SetPosicionInicial(std::make_pair(fila - 1, columna - 1));
+    std::cout << "Introduzca las coordenadas de la casilla de final: " << std::endl;
+    std::cin >> fila >> columna;
+    laberinto.SetPosicionFinal(std::make_pair(fila - 1, columna - 1));
+  } else if (opcion != 2) {
+    std::cout << "No existe esa opción" << std::endl;
+    return 0;
+  }
   std::vector<Nodo*> camino;
   std::vector<Nodo*> nodos_abiertos;
   std::vector<Nodo*> nodos_cerrados;
