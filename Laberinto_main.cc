@@ -34,9 +34,12 @@ int main(int argc, char* argv[]) {
     std::cout << "No existe esa opción" << std::endl;
     return 0;
   }
+  std::cout << "¿Qué heurística desea utilizar?" << std::endl;
+  std::cout << "1. Distancia Manhattan   2. Distancia Euclídea" << std::endl;
+  std::cin >> opcion;
   std::vector<Nodo*> camino;
   std::vector<Nodo*> nodos_abiertos;
   std::vector<Nodo*> nodos_cerrados;
-  laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados);
+  laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados, opcion);
   return 0;
 }
