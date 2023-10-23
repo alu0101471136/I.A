@@ -30,9 +30,26 @@ void Laberinto::MostrarLaberinto() {
     std::cout << "Posicion final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
   for (int i = 0; i < numero_filas_; i++) {
     for (int j = 0; j < numero_columnas_; j++) {
-      std::cout << laberinto_[i][j] << " ";
+      if (laberinto_[i][j] == 0)
+        std::cout << " ";
+      else if (laberinto_[i][j] == 1)
+        std::cout << "#";
+      else if (laberinto_[i][j] == 2)
+        std::cout << "█";
+      else if (laberinto_[i][j] == 3)
+        std::cout << "S";
+      else if (laberinto_[i][j] == 4)
+        std::cout << "F";
     }
     std::cout << std::endl;
+  }
+}
+
+void Laberinto::MarcarCamino(const std::vector<Nodo*>& camino) {
+  for (unsigned i = 0; i < camino.size(); i++) {
+    if (laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 3 && laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 4) {
+      laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] = 2;
+    }
   }
 }
 
@@ -121,9 +138,15 @@ void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>
         nodo_actual = nodo_actual->GetPadre();
       }
       camino.push_back(nodo_actual);
-      for (int i = camino.size() - 1; i >= 0; i--) {
-        std::cout << camino[i]->GetCoordenadas().first + 1 << " " << camino[i]->GetCoordenadas().second + 1 << std::endl;
+      std::cout << "Nodos abiertos: ";
+      for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
+        std::cout << "(" << nodos_abiertos[i]->GetCoordenadas().first + 1 << ", " << nodos_abiertos[i]->GetCoordenadas().second + 1 << ") ";
       }
+      std::cout << std::endl << "Nodos cerrados: ";
+      for (unsigned i = 0; i < nodos_cerrados.size(); i++) {
+        std::cout << "(" << nodos_cerrados[i]->GetCoordenadas().first + 1 << ", " << nodos_cerrados[i]->GetCoordenadas().second + 1 << ") ";
+      }
+      std::cout << std::endl;
       return;
     }
     GetPosiblesVecinos(nodos_abiertos, nodos_cerrados,nodo_actual, opcion);

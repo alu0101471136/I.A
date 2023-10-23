@@ -41,5 +41,7 @@ int main(int argc, char* argv[]) {
   std::vector<Nodo*> nodos_abiertos;
   std::vector<Nodo*> nodos_cerrados;
   laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados, opcion);
+  laberinto.MarcarCamino(camino);
+  laberinto.MostrarLaberinto();
   return 0;
 }
