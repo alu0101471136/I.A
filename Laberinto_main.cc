@@ -17,7 +17,9 @@
 int main(int argc, char* argv[]) {
   std::string fichero{argv[1]};
   Laberinto laberinto(fichero);
-  laberinto.MostrarLaberinto();
+  std::vector<Nodo*> camino;
+  std::vector<Nodo*> nodos_abiertos;
+  std::vector<Nodo*> nodos_cerrados;
   std::cout << "¿Desea cambiar las casillas de incio y final?" << std::endl;
   std::cout << "1. Sí   2. No" << std::endl;
   int opcion;
@@ -37,11 +39,8 @@ int main(int argc, char* argv[]) {
   std::cout << "¿Qué heurística desea utilizar?" << std::endl;
   std::cout << "1. Distancia Manhattan   2. Distancia Euclídea" << std::endl;
   std::cin >> opcion;
-  std::vector<Nodo*> camino;
-  std::vector<Nodo*> nodos_abiertos;
-  std::vector<Nodo*> nodos_cerrados;
   laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados, opcion);
   laberinto.MarcarCamino(camino);
-  laberinto.MostrarLaberinto();
+  laberinto.MostrarLaberinto(nodos_abiertos, nodos_cerrados);
   return 0;
 } 

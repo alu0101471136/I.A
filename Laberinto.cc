@@ -51,23 +51,36 @@ Laberinto::Laberinto(std::string nombre_fichero) {
  * @return No devuelve nada
  * 
 */
-void Laberinto::MostrarLaberinto() {
-  std::cout << "Posicion inicial: " << posicion_inicial_.first + 1 << " " << posicion_inicial_.second + 1 << std::endl;
-    std::cout << "Posicion final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
-  for (int i = 0; i < numero_filas_; i++) {
+void Laberinto::MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const std::vector<Nodo*>& nodos_cerrados) {
+  std::ofstream fichero("Solucion.txt");
+  if (fichero.is_open()) {
+    fichero << "Posicion inicial: " << posicion_inicial_.first + 1 << " " << posicion_inicial_.second + 1 << std::endl;
+    fichero << "Posicion final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
+    fichero << "Coste total: " << nodos_cerrados[nodos_cerrados.size() - 1]->GetCosteTotal() << std::endl;
+    fichero << "Nodos abiertos: ";
+    for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
+      fichero << "(" << nodos_abiertos[i]->GetCoordenadas().first + 1 << ", " << nodos_abiertos[i]->GetCoordenadas().second + 1 << ") ";
+    }
+    fichero << std::endl << "Nodos cerrados: ";
+    for (unsigned i = 0; i < nodos_cerrados.size(); i++) {
+      fichero << "(" << nodos_cerrados[i]->GetCoordenadas().first + 1 << ", " << nodos_cerrados[i]->GetCoordenadas().second + 1 << ") ";
+    }
+    fichero << std::endl << std::endl;
+    for (int i = 0; i < numero_filas_; i++) {
     for (int j = 0; j < numero_columnas_; j++) {
       if (laberinto_[i][j] == 0)
-        std::cout << " ";
+        fichero << " ";
       else if (laberinto_[i][j] == 1)
-        std::cout << "#";
+        fichero << "#";
       else if (laberinto_[i][j] == 2)
-        std::cout << "█";
+        fichero << "█";
       else if (laberinto_[i][j] == 3)
-        std::cout << "S";
+        fichero << "S";
       else if (laberinto_[i][j] == 4)
-        std::cout << "F";
+        fichero << "F";
     }
-    std::cout << std::endl;
+    fichero << std::endl;
+  }
   }
 }
 /**
@@ -210,21 +223,11 @@ void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>
     nodos_cerrados.push_back(nodo_actual);
     if (nodo_actual->GetCoordenadas() == posicion_final_) {
       std::cout << "Camino encontrado" << std::endl;
-      std::cout << "Coste total: " << nodo_actual->GetCosteTotal() << std::endl;
       while (nodo_actual->GetCoordenadas() != posicion_inicial_) {
         camino.push_back(nodo_actual);
         nodo_actual = nodo_actual->GetPadre();
       }
       camino.push_back(nodo_actual);
-      std::cout << "Nodos abiertos: ";
-      for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
-        std::cout << "(" << nodos_abiertos[i]->GetCoordenadas().first + 1 << ", " << nodos_abiertos[i]->GetCoordenadas().second + 1 << ") ";
-      }
-      std::cout << std::endl << "Nodos cerrados: ";
-      for (unsigned i = 0; i < nodos_cerrados.size(); i++) {
-        std::cout << "(" << nodos_cerrados[i]->GetCoordenadas().first + 1 << ", " << nodos_cerrados[i]->GetCoordenadas().second + 1 << ") ";
-      }
-      std::cout << std::endl;
       return;
     }
     GetPosiblesVecinos(nodos_abiertos, nodos_cerrados,nodo_actual, opcion);

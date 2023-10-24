@@ -21,7 +21,7 @@ class Laberinto {
  public:
   Laberinto(std::string nombre_fichero);
   void BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>& nodos_abiertos, std::vector<Nodo*>& nodos_cerrados, int opcion);
-  void MostrarLaberinto();
+  void MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const std::vector<Nodo*>& nodos_cerrados);
   bool MovimientoValido(std::pair<int,int> coordenadas);
   bool NodoAbierto(std::pair<int,int> coordenadas, std::vector<Nodo*>& nodos_abiertos, int& iterador);
   bool NodoCerrado(std::pair<int,int> coordenadas, std::vector<Nodo*>& nodos_cerrados);
