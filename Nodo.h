@@ -1,5 +1,18 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Inteligencia Artificial 2023-2024
+  *
+  * @file Nodo.h
+  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
+  * @date Oct 24 2023
+  * @brief Este es el programa que implementa la clase Nodo
+  * @bug No existen fallos conocidos
+*/
 #ifndef NODO_H
 #define NODO_H
+
 #include <iostream>
 #include <cmath>
 

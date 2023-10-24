@@ -1,7 +1,26 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Inteligencia Artificial 2023-2024
+  *
+  * @file Laberinto.cc
+  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
+  * @date Oct 24 2023
+  * @brief Este es el programa que implementa los métodos de la clase Laberinto
+  * @bug No existen fallos conocidos
+*/
 #include <fstream>
 #include "Nodo.h"
 #include "Laberinto.h"
-
+/**
+ * @name Laberinto
+ * 
+ * @brief Constructor de la clase Laberinto
+ * @param nombre_fichero Nombre del fichero que contiene el laberinto
+ * @return No devuelve nada
+ *
+*/
 Laberinto::Laberinto(std::string nombre_fichero) {
   std::ifstream fichero(nombre_fichero);
   std::string linea;
@@ -24,7 +43,14 @@ Laberinto::Laberinto(std::string nombre_fichero) {
     }
   }
 }
-
+/**
+ * @name MostrarLaberinto 
+ *
+ * @brief Destructor de la clase Laberinto
+ * @param No tiene parámetros
+ * @return No devuelve nada
+ * 
+*/
 void Laberinto::MostrarLaberinto() {
   std::cout << "Posicion inicial: " << posicion_inicial_.first + 1 << " " << posicion_inicial_.second + 1 << std::endl;
     std::cout << "Posicion final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
@@ -44,7 +70,14 @@ void Laberinto::MostrarLaberinto() {
     std::cout << std::endl;
   }
 }
-
+/**
+ * @name MarcarCamino
+ * 
+ * @brief Marca el camino en el laberinto
+ * @param camino Vector que contiene el camino
+ * @return No devuelve nada
+ * 
+*/
 void Laberinto::MarcarCamino(const std::vector<Nodo*>& camino) {
   for (unsigned i = 0; i < camino.size(); i++) {
     if (laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 3 && laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 4) {
@@ -52,7 +85,14 @@ void Laberinto::MarcarCamino(const std::vector<Nodo*>& camino) {
     }
   }
 }
-
+/**
+ * @name MovimientoValido
+ * 
+ * @brief Comprueba si el movimiento es válido
+ * @param coordenadas Coordenadas del movimiento
+ * @return Devuelve true si el movimiento es válido y false si no lo es
+ * 
+*/
 bool Laberinto::MovimientoValido(std::pair<int,int> coordenadas) {
   if (coordenadas.first < 0 || coordenadas.first >= numero_filas_ || coordenadas.second < 0 || coordenadas.second >= numero_columnas_) {
     return false;
@@ -61,7 +101,16 @@ bool Laberinto::MovimientoValido(std::pair<int,int> coordenadas) {
   }
   return true;
 }
-
+/**
+ * @name NodoAbierto
+ * 
+ * @brief Comprueba si el nodo está en la lista de nodos abiertos
+ * @param coordenadas Coordenadas del nodo
+ * @param nodos_abiertos Vector que contiene los nodos abiertos
+ * @param iterador Iterador que indica la posición del nodo en el vector
+ * @return Devuelve true si el nodo está en la lista de nodos abiertos y false si no lo está
+ * 
+*/
 bool Laberinto::NodoAbierto(std::pair<int,int> coordenadas, std::vector<Nodo*>& nodos_abiertos, int& iterador) {
   for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
     if (nodos_abiertos[i]->GetCoordenadas() == coordenadas) {
@@ -71,7 +120,15 @@ bool Laberinto::NodoAbierto(std::pair<int,int> coordenadas, std::vector<Nodo*>& 
   }
   return false;
 }
-
+/**
+ * @name NodoCerrado
+ * 
+ * @brief Comprueba si el nodo está en la lista de nodos cerrados
+ * @param coordenadas Coordenadas del nodo
+ * @param nodos_cerrados Vector que contiene los nodos cerrados
+ * @return Devuelve true si el nodo está en la lista de nodos cerrados y false si no lo está
+ * 
+*/
 bool Laberinto::NodoCerrado(std::pair<int,int> coordenadas, std::vector<Nodo*>& nodos_cerrados) {
   for (unsigned i = 0; i < nodos_cerrados.size(); i++) {
     if (nodos_cerrados[i]->GetCoordenadas() == coordenadas) {
@@ -80,7 +137,17 @@ bool Laberinto::NodoCerrado(std::pair<int,int> coordenadas, std::vector<Nodo*>& 
   }
   return false;
 }
-
+/**
+ * @name GetPosiblesVecinos
+ * 
+ * @brief Obtiene los posibles vecinos de un nodo
+ * @param nodos_abiertos Vector que contiene los nodos abiertos
+ * @param nodos_cerrados Vector que contiene los nodos cerrados
+ * @param nodo_actual Nodo del que se obtienen los vecinos
+ * @param opcion Opción que indica la heurística a utilizar
+ * @return No devuelve nada
+ * 
+*/
 void Laberinto::GetPosiblesVecinos(std::vector<Nodo*>& nodos_abiertos, std::vector<Nodo*>& nodos_cerrados,Nodo* nodo_actual, int opcion) {
   std::pair<int,int> coordenadas = nodo_actual->GetCoordenadas();
   const int dx[8] = {0, 0, -1, 1, -1, -1, 1, 1};
@@ -115,7 +182,17 @@ void Laberinto::GetPosiblesVecinos(std::vector<Nodo*>& nodos_abiertos, std::vect
     }
   }
 }
-
+/**
+ * @name BusquedaAEstrella
+ * 
+ * @brief Realiza la búsqueda A*
+ * @param camino Vector que contiene el camino
+ * @param nodos_abiertos Vector que contiene los nodos abiertos
+ * @param nodos_cerrados Vector que contiene los nodos cerrados
+ * @param opcion Opción que indica la heurística a utilizar
+ * @return No devuelve nada
+ * 
+*/
 void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>& nodos_abiertos, std::vector<Nodo*>& nodos_cerrados, int opcion) {
   Nodo* nodo_inicial = new Nodo(posicion_inicial_);
   nodo_inicial->FuncionHeuristica(posicion_final_, opcion);

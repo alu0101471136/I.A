@@ -6,7 +6,7 @@
   *
   * @file laberinto_main.cc
   * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
-  * @date Oct 17 2023
+  * @date Oct 24 2023
   * @brief Este es el programa main de laberinto
   * @bug No existen fallos conocidos
   */
@@ -44,4 +44,4 @@ int main(int argc, char* argv[]) {
   laberinto.MarcarCamino(camino);
   laberinto.MostrarLaberinto();
   return 0;
-}
+} 
