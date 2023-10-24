@@ -54,7 +54,7 @@ void Laberinto::MarcarCamino(const std::vector<Nodo*>& camino) {
 }
 
 bool Laberinto::MovimientoValido(std::pair<int,int> coordenadas) {
-  if (coordenadas.first < 0 || coordenadas.first > numero_filas_ || coordenadas.second < 0 || coordenadas.second > numero_columnas_) {
+  if (coordenadas.first < 0 || coordenadas.first >= numero_filas_ || coordenadas.second < 0 || coordenadas.second >= numero_columnas_) {
     return false;
   } else if (laberinto_[coordenadas.first][coordenadas.second] == 1) {
     return false;
@@ -133,6 +133,7 @@ void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>
     nodos_cerrados.push_back(nodo_actual);
     if (nodo_actual->GetCoordenadas() == posicion_final_) {
       std::cout << "Camino encontrado" << std::endl;
+      std::cout << "Coste total: " << nodo_actual->GetCosteTotal() << std::endl;
       while (nodo_actual->GetCoordenadas() != posicion_inicial_) {
         camino.push_back(nodo_actual);
         nodo_actual = nodo_actual->GetPadre();
