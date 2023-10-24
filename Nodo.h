@@ -1,36 +1,33 @@
-/**
-  * Universidad de La Laguna
-  * Escuela Superior de Ingeniería y Tecnología
-  * Grado en Ingeniería Informática
-  * Inteligencia Artificial 2023-2024
-  *
-  * @file Nodo.h
-  * @author Raúl Álvarez Pérez alu0101471136@ull.edu.es
-  * @date Sep 27 2023
-  * @brief Este es la cabecera de la clase Nodo
-  * @bug No existen fallos conocidos
-  */
-#include "Vertice.h"
-/** 
- * @name Nodo
- * @brief clase que representa un nodo del arbol de busqueda
- * 
-*/
+#ifndef NODO_H
+#define NODO_H
+#include <iostream>
+#include <cmath>
+
 class Nodo {
  public:
-  Nodo() : vertice_{Vertice()}, padre_{nullptr}, coste_padre_{0} {};
-  Nodo(Vertice vertice, Nodo* padre = nullptr, float coste_padre = 0) : 
-       vertice_{vertice}, padre_{padre}, coste_padre_{coste_padre} {};
-  Vertice GetVertice() const { return vertice_; }
-  Nodo* GetPadre() const { return padre_; }
-  float GetCostePadre() const { return coste_padre_; }
-  void SetPadre(Nodo* padre) { padre_ = padre; }
-  void SetCostePadre(float coste_padre) { coste_padre_ = coste_padre; }
-  bool BuscarRama(Vertice& vertice) const;
-  bool operator==(const Nodo& nodo) const { return this->vertice_ == nodo.vertice_; }
-  bool operator!=(const Nodo& nodo) const { return vertice_ != nodo.vertice_; }
+  Nodo();
+  Nodo(std::pair<int,int> coordenadas, int coste_acumulado = 0, int coste_estimado = 0, Nodo* padre = NULL) : coordenadas_(coordenadas),
+      coste_acumulado_(coste_acumulado), coste_estimado_(coste_estimado), padre_{padre} {};
+  int GetCosteTotal() { return coste_acumulado_ + coste_estimado_; };
+  int GetCosteAcumulado() { return coste_acumulado_; };
+  int GetCosteEstimado() { return coste_estimado_; };
+  std::pair<int,int> GetCoordenadas() { return coordenadas_; };
+  Nodo* GetPadre() { return padre_; };
+  void FuncionHeuristica(std::pair<int,int> posicion_final, int opcion) {
+    if (opcion == 1) {
+      coste_estimado_ = (abs(posicion_final.first - coordenadas_.first) + abs(posicion_final.second - coordenadas_.second)) * 3;
+    } else if (opcion == 2) {
+      coste_estimado_ = sqrt(pow(posicion_final.first - coordenadas_.first, 2) + pow(posicion_final.second - coordenadas_.second, 2));
+    }
+  };
+  void SetCosteAcumulado(int coste_acumulado) { coste_acumulado_ = coste_acumulado; }; 
+  void SetPadre(Nodo* padre) { padre_ = padre; };
  private:
-  Vertice vertice_;
-  Nodo* padre_;
-  float coste_padre_;
+  std::pair<int,int> coordenadas_;
+///  int coste_total_;     /// F(n)
+  int coste_acumulado_; /// G(n)
+  int coste_estimado_;  /// H(n)
+  Nodo* padre_; 
 };
+
+#endif

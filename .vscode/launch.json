@@ -8,8 +8,13 @@
             "name": "g++ - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
+<<<<<<< HEAD
             "program": "${workspaceFolder}/Arboles",
             "args": [ "grafo6" ],
+=======
+            "program": "${workspaceFolder}/${fileBasenameNoExtension}",
+            "args": [ " maze " ],
+>>>>>>> a5e1fc030b9c58a5d30f0ead9936b877699e8522
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/",
             "environment": [],
