@@ -1,0 +1,7 @@
+Vertice inicial: 8
+Vertice final: 9
+Camino: No existe camino
+
+Vertices visitados: 8, 3, 2, 5, 5, 6, 4, 6, 4, 7, 7, 7, 7, 14, 11, 14, 11, 14, 11, 14, 11, 10, 10, 10, 10, 10, 10, 10, 10
+Vertices generados: 8, 2, 3, 15, 5, 7, 4, 6, 4, 6, 7, 7, 11, 14, 11, 14, 11, 14, 11, 14, 10, 10, 10, 10  
+Coste del camino: 0

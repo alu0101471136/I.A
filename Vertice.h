@@ -23,6 +23,7 @@ class Vertice {
  public:
   Vertice() : identificador_{0}, visitado_{false} {};
   Vertice(int identificador, bool visitado = false) : identificador_{identificador}, visitado_{visitado} {};
+  Vertice(const Vertice& vertice) : identificador_{vertice.identificador_}, visitado_{vertice.visitado_} {};
   int GetId() { return identificador_; }
   bool GetVisitado() { return visitado_; }
   bool operator==(const Vertice& vertice) const { return this->identificador_ == vertice.identificador_; }

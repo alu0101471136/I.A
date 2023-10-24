@@ -1,0 +1,6 @@
+Vertice inicial: 8
+Vertice final: 9
+Camino: 8-2-5-4-1-13-9
+Vertices visitados: 8, 2, 5, 4, 1, 13, 9
+Vertices generados: 8, 1, 15, 3, 2, 1, 7, 5, 1, 6, 4, 1, 13, 9  
+Coste del camino: 26

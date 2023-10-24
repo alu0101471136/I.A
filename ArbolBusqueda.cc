@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <stack>
 #include <queue>
+#include <cstdlib>
 /**
  * @name ArbolBusqueda
  * @brief constructor de la clase ArbolBusqueda
@@ -43,10 +44,30 @@ ArbolBusqueda::ArbolBusqueda(std::string informacion_fichero) {
         matriz_costes_[j][i] = std::make_pair(Vertice(i), coste);
       }
     }
+    for (int i = 0; i < numero_vertices_; i++) {
+      int numero_hijos{0};
+      for (int j = 0; j < numero_vertices_; j++) {
+        if (matriz_costes_[i][j].second != -1) {
+          numero_hijos++;
+        }
+      }
+      numero_hijos_.push_back(numero_hijos);
+    }
     fichero.close();
   } else {
     std::cout << "Error al abrir el fichero" << std::endl;
   }
+}
+/**
+ * @name GenerarNumeroAleatorio
+ * @brief funcion que genera un numero aleatorio entre un rango
+ * 
+ * @param max valor maximo del rango
+ * @param min valor minimo del rango
+*/
+int GenerarNumeroAleatorio(int max, int min = 0) {
+  srand(time(NULL));
+  return rand() % (max - min) + min;
 }
 /**
  * @name BusquedaAmplitud
@@ -71,22 +92,60 @@ void ArbolBusqueda::BusquedaAmplitud(Vertice& vertice_inicial, Vertice& vertice_
     if (nodo_actual->GetVertice() == vertice_final) {
       vertices_visitados.push_back(nodo_actual->GetVertice());
       std::cout << "Camino encontrado" << std::endl;
+      distancia_camino = nodo_actual->GetCostePadre();
       while (nodo_actual->GetPadre() != nullptr) {
         camino.push_back(nodo_actual->GetVertice());
-        distancia_camino += nodo_actual->GetCostePadre();
         nodo_actual = nodo_actual->GetPadre();
       }
       camino.push_back(nodo_actual->GetVertice());
       return;
     } else {
       vertices_visitados.push_back(nodo_actual->GetVertice());
+      std::vector<Nodo*> nodos_frontera;
       for (int i = 0; i < numero_vertices_; ++i) {
         if (matriz_costes_[nodo_actual->GetVertice().GetId()][i].second != -1) {
           Vertice vertice_generado{matriz_costes_[nodo_actual->GetVertice().GetId()][i].first};
           if (nodo_actual->BuscarRama(vertice_generado) == false) {
+            // std::cout << "Aleatorio " << GenerarNumeroAleatorio(numero_hijos_[nodo_actual->GetVertice().GetId()]) + 1 << std::endl;
             Nodo* nodo_generado = new Nodo(vertice_generado, nodo_actual, matriz_costes_[nodo_actual->GetVertice().GetId()][i].second);
-            cola.push(nodo_generado);
+            nodo_generado->SetCostePadre(matriz_costes_[nodo_actual->GetVertice().GetId()][i].second + nodo_actual->GetCostePadre());
+            // cola.push(nodo_generado);
+            nodos_frontera.push_back(nodo_generado);
             vertices_generados.push_back(vertice_generado);
+          }
+        }
+      }
+      float min{0}, segundo_min{0};
+      int iterador_min{0}, iterador_segundo_min{0};
+      if (nodos_frontera.size() > 0) {
+        min = nodos_frontera[0]->GetCostePadre();
+        segundo_min = nodos_frontera[0]->GetCostePadre();
+      }
+      for (unsigned i = 0; i < nodos_frontera.size(); ++i) {
+        if (min > nodos_frontera[i]->GetCostePadre()) {
+          segundo_min = min;
+          iterador_segundo_min = iterador_min;
+          min = nodos_frontera[i]->GetCostePadre();
+          iterador_min = i;
+        }
+      }
+      GenerarNumeroAleatorio(2);
+      if (nodos_frontera.size() > 0) {
+        if (GenerarNumeroAleatorio(2) == 1) {
+          cola.push(nodos_frontera[iterador_min]);
+          cola.push(nodos_frontera[iterador_segundo_min]);
+          if (iterador_min < iterador_segundo_min) {
+            nodos_frontera.erase(nodos_frontera.begin() + iterador_segundo_min - 1);
+          } else {
+            nodos_frontera.erase(nodos_frontera.begin() + iterador_segundo_min);
+          }
+        } else {
+          cola.push(nodos_frontera[iterador_segundo_min]);
+          cola.push(nodos_frontera[iterador_min]);
+          if (iterador_min < iterador_segundo_min) {
+            nodos_frontera.erase(nodos_frontera.begin() + iterador_min);
+          } else {
+            nodos_frontera.erase(nodos_frontera.begin() + iterador_min - 1);
           }
         }
       }
@@ -115,8 +174,8 @@ void ArbolBusqueda::BusquedaProfundidad(Vertice& vertice_inicial, Vertice& verti
     Nodo* nodo_actual = pila.top();
     pila.pop();
     if (nodo_actual->GetVertice() == vertice_final) {
-      vertices_visitados.push_back(nodo_actual->GetVertice());
       std::cout << "Camino encontrado" << std::endl;
+      vertices_visitados.push_back(nodo_actual->GetVertice());
       while (nodo_actual->GetPadre() != nullptr) {
         camino.push_back(nodo_actual->GetVertice());
         distancia_camino += nodo_actual->GetCostePadre();

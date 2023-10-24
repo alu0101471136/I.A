@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Arboles",
-            "args": [ "grafo1" ],
+            "args": [ "grafo6" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/",
             "environment": [],
