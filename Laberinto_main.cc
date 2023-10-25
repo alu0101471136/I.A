@@ -37,8 +37,12 @@ int main(int argc, char* argv[]) {
     return 0;
   }
   std::cout << "¿Qué heurística desea utilizar?" << std::endl;
-  std::cout << "1. Distancia Manhattan   2. Distancia Euclídea" << std::endl;
+  std::cout << "1. Distancia Manhattan   2. Distancia Euclídea   3. Distancia Propia" << std::endl;
   std::cin >> opcion;
+  if (opcion < 1 || opcion > 3) {
+    std::cout << "No existe esa opción" << std::endl;
+    return 0;
+  }
   laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados, opcion);
   laberinto.MarcarCamino(camino);
   laberinto.MostrarLaberinto(nodos_abiertos, nodos_cerrados, camino);
