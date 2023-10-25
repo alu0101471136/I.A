@@ -31,6 +31,9 @@ class Nodo {
       coste_estimado_ = (abs(posicion_final.first - coordenadas_.first) + abs(posicion_final.second - coordenadas_.second)) * 3;
     } else if (opcion == 2) {
       coste_estimado_ = sqrt(pow(posicion_final.first - coordenadas_.first, 2) + pow(posicion_final.second - coordenadas_.second, 2));
+    } else if (opcion == 3) {
+      coste_estimado_ = (abs(posicion_final.second - coordenadas_.second) - abs(posicion_final.first - coordenadas_.first)) * 5 
+                        + abs(posicion_final.first - coordenadas_.first) * 7;
     }
   };
   void SetCosteAcumulado(int coste_acumulado) { coste_acumulado_ = coste_acumulado; }; 

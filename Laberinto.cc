@@ -51,11 +51,11 @@ Laberinto::Laberinto(std::string nombre_fichero) {
  * @return No devuelve nada
  * 
 */
-void Laberinto::MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const std::vector<Nodo*>& nodos_cerrados) {
+void Laberinto::MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const std::vector<Nodo*>& nodos_cerrados, const std::vector<Nodo*>& camino) {
   std::ofstream fichero("Solucion.txt");
   if (fichero.is_open()) {
-    fichero << "Posicion inicial: " << posicion_inicial_.first + 1 << " " << posicion_inicial_.second + 1 << std::endl;
-    fichero << "Posicion final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
+    fichero << "Posición inicial: " << posicion_inicial_.first + 1 << " " << posicion_inicial_.second + 1 << std::endl;
+    fichero << "Posición final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
     fichero << "Coste total: " << nodos_cerrados[nodos_cerrados.size() - 1]->GetCosteTotal() << std::endl;
     fichero << "Nodos abiertos: ";
     for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
@@ -64,6 +64,10 @@ void Laberinto::MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const
     fichero << std::endl << "Nodos cerrados: ";
     for (unsigned i = 0; i < nodos_cerrados.size(); i++) {
       fichero << "(" << nodos_cerrados[i]->GetCoordenadas().first + 1 << ", " << nodos_cerrados[i]->GetCoordenadas().second + 1 << ") ";
+    }
+    fichero << std::endl << "Camino: ";
+    for (int i = camino.size() - 1; i >= 0; i--) {
+      fichero << "(" << camino[i]->GetCoordenadas().first + 1 << ", " << camino[i]->GetCoordenadas().second + 1 << ") ";
     }
     fichero << std::endl << std::endl;
     for (int i = 0; i < numero_filas_; i++) {

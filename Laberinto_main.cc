@@ -41,6 +41,6 @@ int main(int argc, char* argv[]) {
   std::cin >> opcion;
   laberinto.BusquedaAEstrella(camino, nodos_abiertos, nodos_cerrados, opcion);
   laberinto.MarcarCamino(camino);
-  laberinto.MostrarLaberinto(nodos_abiertos, nodos_cerrados);
+  laberinto.MostrarLaberinto(nodos_abiertos, nodos_cerrados, camino);
   return 0;
 } 
