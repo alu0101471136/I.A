@@ -11,6 +11,8 @@
   * @bug No existen fallos conocidos
 */
 #include <fstream>
+#include <algorithm>
+#include <random>
 #include "Nodo.h"
 #include "Laberinto.h"
 /**
@@ -52,11 +54,15 @@ Laberinto::Laberinto(std::string nombre_fichero) {
  * 
 */
 void Laberinto::MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const std::vector<Nodo*>& nodos_cerrados, const std::vector<Nodo*>& camino) {
-  std::ofstream fichero("Solucion.txt");
+  std::ofstream fichero("Solucion.txt", std::ios::app);
   if (fichero.is_open()) {
     fichero << "Posición inicial: " << posicion_inicial_.first + 1 << " " << posicion_inicial_.second + 1 << std::endl;
     fichero << "Posición final: " << posicion_final_.first + 1 << " " << posicion_final_.second + 1 << std::endl;
-    fichero << "Coste total: " << nodos_cerrados[nodos_cerrados.size() - 1]->GetCosteTotal() << std::endl;
+    if (camino.empty()) {
+      fichero << "Coste total: 0" << std::endl;
+    } else {
+      fichero << "Coste total: " << camino[0]->GetCosteAcumulado() << std::endl;
+    }
     fichero << "Nodos abiertos: ";
     for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
       fichero << "(" << nodos_abiertos[i]->GetCoordenadas().first + 1 << ", " << nodos_abiertos[i]->GetCoordenadas().second + 1 << ") ";
@@ -85,6 +91,8 @@ void Laberinto::MostrarLaberinto(const std::vector<Nodo*>& nodos_abiertos, const
     }
     fichero << std::endl;
   }
+  fichero << std::endl;
+  fichero.close();
   }
 }
 /**
@@ -99,6 +107,14 @@ void Laberinto::MarcarCamino(const std::vector<Nodo*>& camino) {
   for (unsigned i = 0; i < camino.size(); i++) {
     if (laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 3 && laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 4) {
       laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] = 2;
+    }
+  }
+}
+
+void Laberinto::DesmarcarCamino(const std::vector<Nodo*>& camino) {
+  for (unsigned i = 0; i < camino.size(); i++) {
+    if (laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 3 && laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] != 4) {
+      laberinto_[camino[i]->GetCoordenadas().first][camino[i]->GetCoordenadas().second] = 0;
     }
   }
 }
@@ -175,29 +191,43 @@ void Laberinto::GetPosiblesVecinos(std::vector<Nodo*>& nodos_abiertos, std::vect
     if (MovimientoValido(coordenadas_vecino) && NodoAbierto(coordenadas_vecino, nodos_abiertos, iterador) && !NodoCerrado(coordenadas_vecino, nodos_cerrados)) {
       if (i >= 4) {
         if (nodo_actual->GetCosteAcumulado() + 7 < nodos_abiertos[iterador]->GetCosteAcumulado()) {
-          nodos_abiertos[iterador]->SetCosteAcumulado(nodo_actual->GetCosteAcumulado() + 7);
+          nodos_abiertos[iterador]->SetCosteAcumulado((nodo_actual->GetCosteAcumulado() + 7));
           nodos_abiertos[iterador]->FuncionHeuristica(posicion_final_, opcion);
           nodos_abiertos[iterador]->SetPadre(nodo_actual);
         }
       } else {
         if (nodo_actual->GetCosteAcumulado() + 5 < nodos_abiertos[iterador]->GetCosteAcumulado()) {
-          nodos_abiertos[iterador]->SetCosteAcumulado(nodo_actual->GetCosteAcumulado() + 5);
+          nodos_abiertos[iterador]->SetCosteAcumulado((nodo_actual->GetCosteAcumulado() + 5));
           nodos_abiertos[iterador]->FuncionHeuristica(posicion_final_, opcion);
           nodos_abiertos[iterador]->SetPadre(nodo_actual);
         }
       }
     } else if (MovimientoValido(coordenadas_vecino) && !NodoAbierto(coordenadas_vecino, nodos_abiertos, iterador) && !NodoCerrado(coordenadas_vecino, nodos_cerrados)) {
       if (i >= 4) {
-        Nodo* nodo_vecino = new Nodo(coordenadas_vecino, nodo_actual->GetCosteAcumulado() + 7, nodo_actual->GetCosteEstimado(), nodo_actual);
+        Nodo* nodo_vecino = new Nodo(coordenadas_vecino, (nodo_actual->GetCosteAcumulado() + 7), nodo_actual->GetCosteEstimado(), nodo_actual);
         nodo_vecino->FuncionHeuristica(posicion_final_, opcion);
         nodos_abiertos.push_back(nodo_vecino);
       } else {
-        Nodo* nodo_vecino = new Nodo(coordenadas_vecino, nodo_actual->GetCosteAcumulado() + 5, nodo_actual->GetCosteEstimado(), nodo_actual);
+        Nodo* nodo_vecino = new Nodo(coordenadas_vecino, (nodo_actual->GetCosteAcumulado() + 5), nodo_actual->GetCosteEstimado(), nodo_actual);
         nodo_vecino->FuncionHeuristica(posicion_final_, opcion);
         nodos_abiertos.push_back(nodo_vecino);
       }
     }
   }
+}
+/**
+ * @name GenerarNumeroAleatorio
+ * @brief funcion que genera un numero aleatorio entre un rango
+ * 
+ * @param max valor maximo del rango
+ * @param min valor minimo del rango
+*/
+int GenerarNumeroAleatorio(int max, int min = 0) {
+  std::random_device rd;  // Dispositivo aleatorio
+  std::mt19937 generador(rd());  // Generador Mersenne Twister
+  std::uniform_int_distribution<int> distribucion(min, max);  // Rango de números aleatorios
+  int numero_aleatorio = distribucion(generador);
+  return numero_aleatorio;
 }
 /**
  * @name BusquedaAEstrella
@@ -216,13 +246,15 @@ void Laberinto::BusquedaAEstrella(std::vector<Nodo*>& camino, std::vector<Nodo*>
   nodos_abiertos.push_back(nodo_inicial);
   while (!nodos_abiertos.empty()) {
     if (nodos_abiertos.size() > 1) {
-      for (unsigned i = 0; i < nodos_abiertos.size(); i++) {
-        if (nodos_abiertos[i]->GetCosteTotal() < nodos_abiertos[0]->GetCosteTotal()) {
-          std::swap(nodos_abiertos[i], nodos_abiertos[0]);
-        }
-      }
+      std::sort(nodos_abiertos.begin(), nodos_abiertos.end()); 
     }
-    Nodo* nodo_actual = nodos_abiertos[0];
+    int iterador_aleatorio{0};
+    if (nodos_abiertos.size() > 2) {
+      iterador_aleatorio = GenerarNumeroAleatorio(2);
+    } else {
+      iterador_aleatorio = GenerarNumeroAleatorio(nodos_abiertos.size());
+    }
+    Nodo* nodo_actual = nodos_abiertos[iterador_aleatorio];
     nodos_abiertos.erase(nodos_abiertos.begin());
     nodos_cerrados.push_back(nodo_actual);
     if (nodo_actual->GetCoordenadas() == posicion_final_) {

@@ -36,6 +36,12 @@ class Nodo {
                         + abs(posicion_final.first - coordenadas_.first) * 7;
     }
   };
+  bool operator==(const Nodo& nodo) const {
+    return coordenadas_ == nodo.coordenadas_;
+  };
+  bool operator<(const Nodo& nodo) const {
+    return (coste_acumulado_ + coste_estimado_) < nodo.coste_acumulado_ + nodo.coste_estimado_;
+  };
   void SetCosteAcumulado(int coste_acumulado) { coste_acumulado_ = coste_acumulado; }; 
   void SetPadre(Nodo* padre) { padre_ = padre; };
  private:
